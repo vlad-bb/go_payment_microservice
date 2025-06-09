@@ -48,18 +48,3 @@ Generate SWAGGER documentations:
 ```bash
 cd cmd/server && swag init --parseDependency --parseInternal
 ```
-
-test body for create subscribe
-{
-"amount": 1,
-"card": "5168745017514750",
-"card_cvv": "026",
-"card_exp_month": "01",
-"card_exp_year": "24",
-"description": "test",
-"order_id": "customer2:1",
-"phone": "380936007646",
-"subscribe": "1",
-"subscribe_date_start": "2025-06-08 00:00:00",
-"subscribe_periodicity": "day"
-}
