@@ -1,0 +1,562 @@
+definitions:
+  auth.SignInRequestBody:
+    properties:
+      email:
+        example: johndoe@example.com
+        type: string
+      password:
+        example: "12345678"
+        maxLength: 20
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.SignInResponse200Body:
+    properties:
+      token:
+        type: string
+    type: object
+  auth.SignUpRequestBody:
+    properties:
+      email:
+        example: johndoe@example.com
+        type: string
+      password:
+        example: "12345678"
+        maxLength: 20
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.SignUpResponse200Body:
+    properties:
+      user:
+        $ref: '#/definitions/user.User'
+    type: object
+  customer.CreateCustomerRequestBody:
+    properties:
+      name:
+        example: John Doe
+        type: string
+      telegram_id:
+        example: "123456789"
+        type: string
+    type: object
+  customer.CreateCustomerResponse200Body:
+    properties:
+      customer:
+        $ref: '#/definitions/customer.Customer'
+    type: object
+  customer.Customer:
+    properties:
+      created_at:
+        example: "2020-01-01T00:00:00+09:00"
+        type: string
+      is_active:
+        example: true
+        type: boolean
+      name:
+        example: John Doe
+        type: string
+      telegram_id:
+        example: "123456789"
+        type: string
+    type: object
+  customer.GetCustomerResponse200Body:
+    properties:
+      customer:
+        $ref: '#/definitions/customer.Customer'
+    type: object
+  customer.ListCustomerResponse200Body:
+    properties:
+      customers:
+        items:
+          $ref: '#/definitions/customer.Customer'
+        type: array
+    type: object
+  customer.UpdateCustomerRequestBody:
+    properties:
+      is_active:
+        example: true
+        type: boolean
+      name:
+        example: John Doe
+        type: string
+      telegram_id:
+        example: "123456789"
+        type: string
+    type: object
+  customer.UpdateCustomerResponse200Body:
+    properties:
+      status:
+        example: OK
+        type: string
+    type: object
+  liqpay.CreateSubRequestBody:
+    properties:
+      amount:
+        description: число більше 0
+        type: number
+      card:
+        type: string
+      card_cvv:
+        type: string
+      card_exp_month:
+        type: string
+      card_exp_year:
+        type: string
+      description:
+        type: string
+      order_id:
+        description: 'validate:"orderid"` // має бути символ розподілювача : TODO
+          fix validation'
+        type: string
+      phone:
+        description: 'Телефон вказується в міжнародному форматі (Україна +380). Наприклад:
+          +380950000001 (з +) або 380950000001 (без +)'
+        type: string
+      subscribe:
+        description: ціле число більше 1
+        type: string
+      subscribe_date_start:
+        description: Час необхідно вказувати в такому форматі 2015-03-31 00:00:00
+          по UTC
+        type: string
+      subscribe_periodicity:
+        description: 'Можливі значення: day - щодня, week - щотижня, month - раз на
+          місяць, year - раз на рік'
+        type: string
+    type: object
+  liqpay.CreateSubResponseBody:
+    properties:
+      body:
+        $ref: '#/definitions/liqpay.LPCreateSub'
+    type: object
+  liqpay.DeleteSubRequestBody:
+    properties:
+      order_id:
+        description: 'validate:"orderid"` // має бути символ розподілювача : TODO
+          fix validation'
+        type: string
+    type: object
+  liqpay.DeleteSubResponseBody:
+    properties:
+      body:
+        $ref: '#/definitions/liqpay.LPDeleteSub'
+    type: object
+  liqpay.GetSubResponse200Body:
+    properties:
+      subscription:
+        $ref: '#/definitions/subscription.Subscription'
+    type: object
+  liqpay.LPCreateSub:
+    properties:
+      acq_id:
+        type: integer
+      action:
+        type: string
+      amount:
+        type: number
+      created_at:
+        type: string
+      currency:
+        type: string
+      customer_id:
+        type: string
+      description:
+        type: string
+      liqpay_order_id:
+        type: string
+      order_id:
+        type: string
+      payment_id:
+        type: integer
+      receiver_commission:
+        type: number
+      result:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: integer
+      type:
+        type: string
+      version:
+        type: integer
+    type: object
+  liqpay.LPDeleteSub:
+    properties:
+      acq_id:
+        type: integer
+      created_at:
+        type: string
+      customer_id:
+        type: string
+      order_id:
+        type: string
+      result:
+        type: string
+      status:
+        type: string
+      version:
+        type: integer
+    type: object
+  liqpay.LPUpdateSub:
+    properties:
+      acq_id:
+        type: integer
+      action:
+        type: string
+      amount:
+        type: number
+      created_at:
+        type: string
+      currency:
+        type: string
+      customer_id:
+        type: string
+      description:
+        type: string
+      liqpay_order_id:
+        type: string
+      order_id:
+        type: string
+      payment_id:
+        type: integer
+      receiver_commission:
+        type: number
+      result:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: integer
+      type:
+        type: string
+      version:
+        type: integer
+    type: object
+  liqpay.UpdateSubRequestBody:
+    properties:
+      amount:
+        description: число більше 0
+        type: number
+      card:
+        type: string
+      card_cvv:
+        type: string
+      card_exp_month:
+        type: string
+      card_exp_year:
+        type: string
+      description:
+        type: string
+      order_id:
+        description: 'validate:"orderid"` // має бути символ розподілювача : TODO
+          fix validation'
+        type: string
+      phone:
+        description: 'Телефон вказується в міжнародному форматі (Україна +380). Наприклад:
+          +380950000001 (з +) або 380950000001 (без +)'
+        type: string
+    type: object
+  liqpay.UpdateSubResponseBody:
+    properties:
+      body:
+        $ref: '#/definitions/liqpay.LPUpdateSub'
+    type: object
+  subscription.Subscription:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      customer_id:
+        type: string
+      description:
+        type: string
+      order_id:
+        type: string
+      status:
+        type: string
+      subscribe:
+        type: string
+      subscribe_date_end:
+        type: string
+      subscribe_date_start:
+        type: string
+      subscribe_periodicity:
+        type: string
+    type: object
+  user.User:
+    properties:
+      created_at:
+        example: "2020-01-01T00:00:00+09:00"
+        type: string
+      email:
+        example: johndoe@example.com
+        type: string
+      id:
+        example: 0001M2PVBD5Q1DAMYJ0S2HADD6
+        type: string
+      is_active:
+        example: true
+        type: boolean
+      pwd_hash:
+        example: $2a$10$pikzoSYzIs1GRRPi0vermeY1mPH4
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Payments API microservice
+  title: PaymentsAPI
+  version: "1.0"
+paths:
+  /api/auth/signin:
+    post:
+      description: Signing up new User
+      parameters:
+      - description: Sign up request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignInRequestBody'
+      responses:
+        "200":
+          description: Sign up succeeded
+          schema:
+            $ref: '#/definitions/auth.SignInResponse200Body'
+        "400":
+          description: Client error
+          schema: {}
+        "409":
+          description: User already exists
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: SignIn
+      tags:
+      - auth
+  /api/auth/signup:
+    post:
+      description: Signing up new User
+      parameters:
+      - description: Sign up request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignUpRequestBody'
+      responses:
+        "200":
+          description: Sign up succeeded
+          schema:
+            $ref: '#/definitions/auth.SignUpResponse200Body'
+        "400":
+          description: Client error
+          schema: {}
+        "409":
+          description: User already exists
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: SignUp
+      tags:
+      - auth
+  /api/customer/{telegram_id}:
+    get:
+      description: Get customer by telegram_id
+      parameters:
+      - description: Telegram ID of the customer
+        in: path
+        name: telegram_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Get customer succeeded
+          schema:
+            $ref: '#/definitions/customer.GetCustomerResponse200Body'
+        "404":
+          description: Customer not found
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Get Customer
+      tags:
+      - customer
+  /api/customer/create:
+    post:
+      description: Create new customer
+      parameters:
+      - description: Create customer request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/customer.CreateCustomerRequestBody'
+      responses:
+        "200":
+          description: Create customer succeeded
+          schema:
+            $ref: '#/definitions/customer.CreateCustomerResponse200Body'
+        "400":
+          description: Client error
+          schema: {}
+        "409":
+          description: Customer already exists
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Create Customer
+      tags:
+      - customer
+  /api/customer/list:
+    get:
+      description: List customers
+      responses:
+        "200":
+          description: List customers succeeded
+          schema:
+            $ref: '#/definitions/customer.ListCustomerResponse200Body'
+        "404":
+          description: Customers not found
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Get list of customers
+      tags:
+      - customer
+  /api/customer/update:
+    put:
+      description: Update existing customer
+      parameters:
+      - description: Update customer request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/customer.UpdateCustomerRequestBody'
+      responses:
+        "200":
+          description: Update customer succeeded
+          schema:
+            $ref: '#/definitions/customer.UpdateCustomerResponse200Body'
+        "400":
+          description: Client error
+          schema: {}
+        "409":
+          description: Customer already exists
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Update Customer
+      tags:
+      - customer
+  /api/subscription/{telegram_id}:
+    get:
+      description: Get subscription by telegram_id
+      parameters:
+      - description: Telegram ID of the customer
+        in: path
+        name: telegram_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Get subscription succeeded
+          schema:
+            $ref: '#/definitions/liqpay.GetSubResponse200Body'
+        "404":
+          description: Subscription not found
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Get Subscription
+      tags:
+      - subscription
+  /api/subscription/create-sub:
+    post:
+      description: Create Subscription for customer
+      parameters:
+      - description: Create subscription request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/liqpay.CreateSubRequestBody'
+      responses:
+        "200":
+          description: Create subscription succeeded
+          schema:
+            $ref: '#/definitions/liqpay.CreateSubResponseBody'
+        "400":
+          description: Client error
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Create Subscription
+      tags:
+      - subscription
+  /api/subscription/delete-sub:
+    delete:
+      description: Delete Subscription for customer
+      parameters:
+      - description: Delete subscription request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/liqpay.DeleteSubRequestBody'
+      responses:
+        "200":
+          description: Delete subscription succeeded
+          schema:
+            $ref: '#/definitions/liqpay.DeleteSubResponseBody'
+        "400":
+          description: Client error
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Delete Subscription
+      tags:
+      - subscription
+  /api/subscription/update-sub:
+    put:
+      description: Update Subscription for customer
+      parameters:
+      - description: Update subscription request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/liqpay.UpdateSubRequestBody'
+      responses:
+        "200":
+          description: Update subscription succeeded
+          schema:
+            $ref: '#/definitions/liqpay.UpdateSubResponseBody'
+        "400":
+          description: Client error
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Update Subscription
+      tags:
+      - subscription
+swagger: "2.0"
