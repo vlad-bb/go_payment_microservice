@@ -1,0 +1,167 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - server1
+#      - server2
+#      - server3
+    networks:
+      - appnet
+
+  server1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server1
+    ports:
+      - "8084:8080"
+    volumes:
+#      - ./profiles:/tmp/profiles
+      - ./logs/server1:/var/log/app
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    env_file: .env
+    environment:
+        - INSTANCE_NAME=server1
+    networks:
+      - appnet
+
+#  server2:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: server2
+#    ports:
+#      - "8082:8080"
+#    volumes:
+#      - ./profiles:/tmp/profiles
+#      - ./logs/server1:/var/log/app
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "10m"
+#        max-file: "3"
+#    env_file: .env
+#    environment:
+#      - INSTANCE_NAME=server2
+#    networks:
+#      - appnet
+#
+#  server3:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: server3
+#    ports:
+#      - "8083:8080"
+#    volumes:
+#      - ./profiles:/tmp/profiles
+#      - ./logs/server1:/var/log/app
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "10m"
+#        max-file: "3"
+#    env_file: .env
+#    environment:
+#      - INSTANCE_NAME=server3
+#    networks:
+#      - appnet
+#
+#  mongo:
+#    image: mongo:7.0
+#    container_name: mongo
+#    command: mongod --auth
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=root
+#      - MONGO_INITDB_ROOT_PASSWORD=root
+#      - MONGO_INITDB_DATABASE=app
+#    ports:
+#      - "27017:27017"
+#    networks:
+#      - appnet
+#
+#  pyroscope:
+#    image: pyroscope/pyroscope:latest
+#    container_name: pyroscope
+#    command: server
+#    ports:
+#      - "4040:4040"
+#    networks:
+#      - appnet
+#
+#  prometheus:
+#    image: prom/prometheus
+#    container_name: prometheus_metrics
+#    volumes:
+#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#    ports:
+#      - "9090:9090"
+#    networks:
+#      - appnet
+#
+#  grafana:
+#    image: grafana/grafana
+#    container_name: grafana
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#    depends_on:
+#      - prometheus
+#    networks:
+#      - appnet
+#
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+#    container_name: elasticsearch
+#    environment:
+#      - discovery.type=single-node
+#      - xpack.security.enabled=false
+#    ports:
+#      - "9200:9200"
+#    networks:
+#      - appnet
+#
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:8.13.4
+#    container_name: kibana
+#    environment:
+#      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+#    ports:
+#      - "5601:5601"
+#    depends_on:
+#      - elasticsearch
+#    networks:
+#      - appnet
+#
+#  logstash:
+#    image: docker.elastic.co/logstash/logstash:8.13.4
+#    container_name: logstash
+#    volumes:
+#      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+#      - ./logs/nginx:/var/log/nginx:ro
+#      - ./logs/server1:/var/log/app/server1:ro
+#      - ./logs/server2:/var/log/app/server2:ro
+#      - ./logs/server3:/var/log/app/server3:ro
+#    ports:
+#      - "5044:5044"
+#    depends_on:
+#      - elasticsearch
+#    networks:
+#      - appnet
+
+networks:
+  appnet:
+    driver: bridge
